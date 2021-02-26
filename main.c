@@ -77,7 +77,7 @@ char* processFile(FILE* fp){
 void displayText(char* text){
     for(int i = 0; i < MAXCHAR+1; i++){
         printf("%c", text[i]);
-        if( i>2 && (i%60 == 0))
+        if( i>2 && ((i+1)%60 == 0))
             printf("\n");
     }
 }
