@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
     //Variable declarations
     FILE* txtFile, *keyFile;
-    char *plainText, *encryptionKey, *cypherText;
+    char *plainText, *encryptionKey, *cipherText;
 
     //Open Files
     //todo Change to command line input
@@ -33,9 +33,13 @@ int main(int argc, char *argv[]) {
         exit(-1);
     }
 
-    printf("Plaintext:\n");
+    printf("Vigenere Key:\n\n");
+    encryptionKey = processFile(keyFile);
+    displayText(encryptionKey);
 
+    printf("\n\n\nPlaintext:\n\n");
     plainText = processFile(txtFile);
+    printf("\n\n Plain Text Processed\n\n");
     displayText(plainText);
 
 
@@ -48,25 +52,33 @@ char* processFile(FILE* fp){
     char singleChar;
 
     for(int i = 0; i < MAXCHAR; i++){
+
+
         singleChar = fgetc(fp);
-
-        if(isalpha(singleChar)){
-            printf("char %c placed in spot %d \n", singleChar, i);
-            retChar[i] = tolower(singleChar);
+        while(singleChar != EOF) {
+            if (isalpha(singleChar)) {
+                singleChar = tolower(singleChar);
+                //printf("char %c placed in spot %d \n", singleChar, i);
+                retChar[i] = singleChar;
+                i++;
+            }
+            singleChar = fgetc(fp);
         }
 
-        if(fgetc(fp) == EOF){
-            retChar[i] = 'x';
-        }
+//            retChar[i] = 'x';
+//            printf("char x placed in spot %d \n", i);
+
     }
 
-    retChar[MAXCHAR] = "/0";
+    retChar[MAXCHAR] = '\0';
     return retChar;
 }
 
 void displayText(char* text){
-    for(int i = 0; i < MAXCHAR; i++){
-        printf("%s", text[i]);
+    for(int i = 0; i < MAXCHAR+1; i++){
+        printf("%c", text[i]);
+        if( i>2 && (i%60 == 0))
+            printf("\n");
     }
 }
 
